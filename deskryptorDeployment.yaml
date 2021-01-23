@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: network-mme
+  labels:
+    app: atsi
+    version: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mme
+  template:
+    metadata:
+      name: mme
+      labels:
+        app: mme
+    spec:
+      containers:
+      - name: mme
+        image: stahu/atsirepo:firstone
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerrepo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: network-upf
+  labels:
+    app: atsi
+    version: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: upf
+  template:
+    metadata:
+      name: upf
+      labels:
+        app: upf
+    spec:
+      containers:
+      - name: upf
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
